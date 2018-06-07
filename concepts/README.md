@@ -93,11 +93,6 @@ Functions are declared with `fun`:
         return first + second
     }
 
-
-### First class functions
-
-Functions can be declared at the top level, i.e. within a file without any enclosing type.
-
 ### Function expressions
 
 You can declare short functions as expressions, e.g.
@@ -115,6 +110,20 @@ This encourages a functional style, e.g.
 ### Extension functions
 
 You can extend classes that are built in, or where you otherwise can't modify the source code.
+
+    
+
+### Top level functions
+
+Functions can be declared at the top level, i.e. within a file without any enclosing type.
+
+This also goes for your program entrypoint:
+
+    package com.example
+
+    fun main(args: Array<String>) {
+        println "Hello world!"
+    }
 
 ## Classes
 
