@@ -137,22 +137,22 @@ This encourages a functional style, e.g.
 
     fun power(operand: Int) = operand * operand
     
-    [1..10].map(this::power).forEach(println)
+    (1..10).map(::power).forEach(::println)
 
 ### Extension functions
 
 You can extend classes that are built in, or where you otherwise can't modify the source code.
 
-    val formatter = DateTimeFormatter.ofPattern("yyyy-mm-dd", Locale.ENGLISH)
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
-    fun LocalDateTime.toDisplayForm() {
+    fun LocalDateTime.toDisplayForm(): String {
         // the implicit 'this' is the instance on which the extension method is invoked
         return this.format(formatter)
     }
 
 You can use this function on any `LocalDateTime` in scope:
 
-    val now = LocalDateTime.now();
+    val now = LocalDateTime.now()
     println(now.toDisplayForm())
 
 ### Top level functions
@@ -208,7 +208,7 @@ Kotlin supports the concept of delegation for properties.
 
 A good example of this is the built-in `lazy` delegate, used like this:
 
-    val formatter by lazy { DateTimeFormatter.ofPattern("dd.mm.yyyy", Locale.ENGLISH) }
+    val formatter by lazy { DateTimeFormatter.ofPattern("yyyy-MM-dd") }
 
 This means that `formatter` is not initialised until you use it, and subsequently it is memoised (i.e. cached), for efficiency.
 
@@ -284,3 +284,14 @@ In Java:
 * Inlining
 * Infix
 * Operator overloading
+
+# Further reading
+
+* Kotlin official: https://kotlinlang.org/
+* Kotlin koans: https://kotlinlang.org/docs/tutorials/koans.html 
+* Online REPL: https://try.kotlinlang.org/#/Examples/Hello,%20world!/Simplest%20version/Simplest%20version.kt
+
+Cross-platform:
+
+* Getting started with Android and Kotlin: https://kotlinlang.org/docs/tutorials/kotlin-android.html 
+* Your first Node.js app with Kotlin: https://medium.com/@Miqubel/your-first-node-js-app-with-kotlin-30e07baa0bf7 
