@@ -74,16 +74,48 @@ Here's a non-null variable:
 You can always trust it when you dereference it not to blow up with the dreaded `NullPointerException`.
 
     // always works
-    println(
+    bar.something()
 
     // enforced at compile time
     val qux: Int = bar
+
+If a variable can be `null` then you declare it with the `?` suffix on its type, e.g.
+
+    Int?
+    String?
+
+You can test for null in the usual way:
+
+    var maybe: String?
+    if (null != maybe) {
+        println(maybe.length)
+    }
+
+...or you can utilise Kotlin's null-safe operator:
+
+    // this is always safe
+    println(maybe?.length)
+
+### Elvis operator
+
+There is a shorthand for the case where an expression evaluates to `null`, using the Elvis operator `?:`
+
+    val result = maybe ?: "Something else"
+
+This is semantically equivalent to the `.orElse()` method in Java 8's `Optional` class.
 
 ### Collections and ranges
 
 Powerful built in collection types, e.g.
 
     val foo = listOf("The", "quick", "brown", "fox")
+    val bar = mapOf(
+        "key1" to "value1",
+        "key2" to "value2"
+        // etc.
+    )
+
+> Note: There are no 'collection literals' in Kotlin, unlike JavaScript or Groovy.
 
 ## Functions
 
@@ -105,13 +137,23 @@ This encourages a functional style, e.g.
 
     fun power(operand: Int) = operand * operand
     
-    [1..10].map(this::power).forEach(
+    [1..10].map(this::power).forEach(println)
 
 ### Extension functions
 
 You can extend classes that are built in, or where you otherwise can't modify the source code.
 
-    
+    val formatter = DateTimeFormatter.ofPattern("yyyy-mm-dd", Locale.ENGLISH)
+
+    fun LocalDateTime.toDisplayForm() {
+        // the implicit 'this' is the instance on which the extension method is invoked
+        return this.format(formatter)
+    }
+
+You can use this function on any `LocalDateTime` in scope:
+
+    val now = LocalDateTime.now();
+    println(now.toDisplayForm())
 
 ### Top level functions
 
@@ -131,7 +173,17 @@ Java-like syntax:
 
     class ToDoItem {
         fun add(first: Int, second: Int) {
-          
+          // etc...
+        }
+    }
+
+Constructors are declared with the type name:
+
+    class ToDoItem(private val someValue: String) {
+
+        fun work() {
+          // you can work with the 'someValue' property
+          println(someValue)
         }
     }
 
@@ -150,22 +202,82 @@ Members (functions, properties etc.) are public by default. You can of course us
 
 Members are _final_ by default, although you can override this with the `open` or `abstract` modifiers. You can also turn this off at a module level with a compiler setting.
 
-### Constructors
+### Delegation and 'lazy'
 
-...
+Kotlin supports the concept of delegation for properties.
+
+A good example of this is the built-in `lazy` delegate, used like this:
+
+    val formatter by lazy { DateTimeFormatter.ofPattern("dd.mm.yyyy", Locale.ENGLISH) }
+
+This means that `formatter` is not initialised until you use it, and subsequently it is memoised (i.e. cached), for efficiency.
 
 ### Data classes
 
-Bye bye boilerplate.
+Bye bye boilerplate!
+
+In Kotlin:
+
+    data class Person(val name: String, val age: Int)
+
+In Java:
+
+    public class Person {
+       private String name;
+       private int age = 0;
+
+       public Person(String name, int age) {
+           this.name = name;
+           this.age = age;
+       }
+
+       public String getName() {
+           return name;
+       }
+
+       public void setName(String name) {
+           this.name = name;
+       }
+
+       public int getAge() {
+           return age;
+       }
+
+       public void setAge(int age) {
+           this.age = age;
+       }
+
+       @Override
+       public boolean equals(Object o) {
+           if (this == o) return true;
+           if (o == null || getClass() != o.getClass()) return false;
+
+           Person person = (Person) o;
+
+           if (name != null ? !name.equals(person.name) : person.name != null) return false;
+           if (age != 0 ? age != person.age : person.age != 0) return false;
+       }
+
+       @Override
+       public int hashCode() {
+           int result = name != null ? name.hashCode() : 0;
+           result = 31 * result + age;
+           return result;
+       }
+
+       @Override
+       public String toString() {
+           return "Person{" +
+                   "name='" + name + '\'' +
+                   ", age='" + age + '\'' +
+                   '}';
+       }
+  }
 
 ## Misc
 
-## String templates
-
-## Inlining
-
-## Infix
-
-## Operator overloading
-
-## Pairs, multiple return types and destructuring
+* String templates
+* Pairs, multiple return types and destructuring
+* Inlining
+* Infix
+* Operator overloading
