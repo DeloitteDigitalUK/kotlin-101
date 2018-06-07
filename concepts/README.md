@@ -63,9 +63,9 @@ Occasionally you still want mutable variables:
 
 ## Null safe
 
-The concept of null safety is built right into the type system. You cannot accidentally* assign a nullable variable to one requiring a non-null value.
+The concept of null safety is built right into the type system. You cannot _accidentally_ assign a nullable variable to one requiring a non-null value.
 
-> * though you can override the compiler if you think you know best
+> Note: you can override the compiler if you think you know best, using the `!!` operator.
 
 Here's a non-null variable:
 
@@ -121,7 +121,7 @@ Powerful built in collection types, e.g.
 
 Functions are declared with `fun`:
 
-    fun add(first: Int, second: Int) {
+    fun add(first: Int, second: Int): Int {
         return first + second
     }
 
@@ -131,7 +131,7 @@ You can declare short functions as expressions, e.g.
 
     fun add(first: Int, second: Int) = first + second
     
-> Note: no `return`, no type declaration required
+> Note: no `return`, no return type declaration required
 
 This encourages a functional style, e.g.
 
@@ -277,6 +277,9 @@ In Java:
 ## Misc
 
 * String templates
+* The `when` block - like `switch` but better (checking types)
+* Using `when` and `if` as expressions
+* Smart cast
 * Pairs, multiple return types and destructuring
 * Inlining
 * Infix
