@@ -59,7 +59,7 @@ Occasionally you still want mutable variables:
     var foo = "Ada Lovelace"
     foo = "Grace Hopper"
 
-> Rule of thumb: challenge yourself to find a way to make your state immutable
+> Challenge yourself to find a way to make your state immutable. As your project grows, it will help you reason about state.
 
 ## Null safe
 
